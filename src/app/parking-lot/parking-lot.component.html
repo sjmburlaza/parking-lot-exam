@@ -1,0 +1,35 @@
+<div class="grid">
+    <div class="col p-5">
+        <p-table [value]="parkingLot" styleClass="p-datatable-gridlines" [tableStyle]="{'max-width': '500px'}">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>ID</th>
+                    <th>Parking Size</th>
+                    <th>Nearest Entrance</th>
+                    <th>Is Vacant</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-p>
+                <tr>
+                    <td>{{p.id}}</td>
+                    <td>{{p.size}}</td>
+                    <td>{{p.distanceFromEntrance}}</td>
+                    <td>{{p.isVacant}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <div class="col">
+        <div class="card">
+            <p-card>
+                <h4>New Vehicle</h4>
+                <!-- <form  name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate> -->
+                    <!-- <input type="text" name="entryPoint" id="" placeholder="Entry Point" [(ngModel)]="newVehicle.entryPoint" required> -->
+                    <!-- <input type="text" name="vehicleType" id="" placeholder="Vehicle Type" [(ngModel)]="newVehicle.vehicleType" required> -->
+                    <!-- <button type="submit" class="btn btn-outline-primary mx-1">Submit</button> -->
+                <!-- </form> -->
+            </p-card>
+        </div>
+    </div>
+    <div class="col">3</div>
+</div>
