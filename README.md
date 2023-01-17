@@ -1,27 +1,55 @@
-# ParkingLot
+00 Parking Lot
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.5.
+You were hired by XYZ Corp. to implement a parking allocation system for their new malling complex, the Object-Oriented Mall.
+The new parking system will pre-assign a slot for every vehicle coming into the complex. No vehicle can freely choose a parking
+slot and no vehicle is reserved or assigned a slot until they arrive at the entry point of the complex. The system must assign
+a parking slot the satisfies the following constraints:
 
-## Development server
+1. There are initially three (3) entry points, and can be no less than three (3), leading into the parking complex. A vehicle
+  must be assigned a possible and available slot closest to the parking entrance. The mall can decide to add new entrances later.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+2. There are three types of vehicles: small (S), medium (M) and large (L),
+  and there are three types or parking slots: small (SP), medium (MP) and large (LP).
 
-## Code scaffolding
+  (a) S vehicles can park in SP, MP and LP parking spaces;
+  (b) M vehicles can park in MP and LP parking spaces; and
+  (c) L vehicles can park only in LP parking spaces.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+3. Your parking system must also handle the calculation of fees, and must meet the following pricing structure:
 
-## Build
+  (a) All types of car pay the flat rate of 40 pesos for the first three (3) hours;
+  (b) The exceeding hourly rate beyond the initial three (3) hours will be charged as follows:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+      - 20/hour for vehicles parked in SP;
+      - 60/hour for vehicles parked in MP; and
+      - 100/hour for vehicles parked in LP
 
-## Running unit tests
+      Take note that exceeding hours are charged depending on parking slot size regardless of vehicle size.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+      For parking that exceeds 24 hours, every full 24 hour chunk is charged 5,000 pesos regardless of parking slot.
+      The remainder hours are charged using the method explained in (b).
 
-## Running end-to-end tests
+      Parking fees are calculated using rounding up method, e.g. 6.5 hours must be rounded to 7.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+  (c) A vehicle leaving the parking complex and returning within one hour must be charged continuous rate,
+      i.e. the vehicle must be considered as if it did not leave. Otherwise, rates must be implemented as described.
 
-## Further help
+You are free to design the system in any pattern you wish. However, take note that the system assumes the input of the following:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+  (a) The number of entry points to the parking complex, but no less than three (3). Assume that the entry points
+      are also exit points, so no need to take into account the number of possible exit points.
+
+  (b) The map of the parking slot. You are welcome to introduce a design that suits your approach. One suggested
+      method, however, is to accept a list of tuples corresponding to the distance of each slot from every entry
+      point. For example, if your parking system has three (3) entry points. The list of parking spaces may be
+      the following: [(1,4,5), (3,2,3), ...], where the integer entry per tuple corresponds the distance unit
+      from every parking entry points (A, B, C).
+
+  (c) The sizes of every corresponding parking slot. Again, you are welcome to introduce your own design. We suggest using
+      a list of corresponding sizes described in integers: [0, 2, 1, 1, ...] where 0, 1, 2 means small, medium and large
+      in that order. Another useful design may be a dictionary of parking sizes with corresponding slots as values.
+
+  (d) Two functions to park a vehicle and unpark it. The functions must consider the attributes of the vehicle as described above.
+      When the unpark function is called, it must also return how much the vehicle concerned is charged.
+
+Please develop in either Angular or NodeJS. You will be required to explain your approach during the interview. Have fun!

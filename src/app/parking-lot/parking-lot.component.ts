@@ -5,6 +5,10 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { ParkingService } from '../services/parking.service';
 
 const FLAT_RATE = 40;
+const DAY_RATE = 5000;
+const MIN_HOURS = 3;
+const HOURS_PER_DAY = 24;
+
 
 @Component({
   selector: 'app-parking-lot',
@@ -96,7 +100,7 @@ export class ParkingLotComponent implements OnInit  {
   checkParking(vehicle: Vehicle): void {
     let response;
     if (this.parkingLot.every(parking => parking.isVacant === false)) {
-      response = 'The parking lot is full';
+      alert('The parking lot is full');
       return;
     }
     if (vehicle.type === VehicleType.L) {
@@ -175,25 +179,25 @@ export class ParkingLotComponent implements OnInit  {
 
     const parking = this.parkingLot.find(p => p.id === oldVehicle?.parkingSpot);
 
-    if (hoursDiff && hoursDiff > 3 && hoursDiff < 24) {
+    if (hoursDiff && hoursDiff > MIN_HOURS && hoursDiff < HOURS_PER_DAY) {
       if (parking && parking.size === ParkingSlotType.SP) {
-        return (hoursDiff - 3) * HourlyRate.SP + FLAT_RATE;
+        return (hoursDiff - MIN_HOURS) * HourlyRate.SP + FLAT_RATE;
       } else if (parking && parking.size === ParkingSlotType.MP) {
-        return (hoursDiff - 3) * HourlyRate.MP + FLAT_RATE;
+        return (hoursDiff - MIN_HOURS) * HourlyRate.MP + FLAT_RATE;
       } else if (parking && parking.size === ParkingSlotType.LP) {
-        return (hoursDiff - 3) * HourlyRate.LP + FLAT_RATE;
+        return (hoursDiff - MIN_HOURS) * HourlyRate.LP + FLAT_RATE;
       }
-    } else if (hoursDiff && hoursDiff > 24) {
-      const numOfDays = Math.floor(hoursDiff/24);
+    } else if (hoursDiff && hoursDiff > HOURS_PER_DAY) {
+      const numOfDays = Math.floor(hoursDiff/HOURS_PER_DAY);
       if (parking && parking.size === ParkingSlotType.SP) {
-        return ((hoursDiff % 24) * HourlyRate.SP) + (numOfDays * 5000);
+        return ((hoursDiff % HOURS_PER_DAY) * HourlyRate.SP) + (numOfDays * DAY_RATE);
       } else if (parking && parking.size === ParkingSlotType.MP) {
-        return ((hoursDiff % 24) * HourlyRate.MP) + (numOfDays * 5000);
+        return ((hoursDiff % HOURS_PER_DAY) * HourlyRate.MP) + (numOfDays * DAY_RATE);
       } else if (parking && parking.size === ParkingSlotType.LP) {
-        return ((hoursDiff % 24) * HourlyRate.LP) + (numOfDays * 5000);
+        return ((hoursDiff % HOURS_PER_DAY) * HourlyRate.LP) + (numOfDays * DAY_RATE);
       }
     }
-    return 40;
+    return FLAT_RATE;
   }
 
   onSubmit() {

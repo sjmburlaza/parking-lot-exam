@@ -42,7 +42,7 @@
                         <td>{{p.entryPoint}}</td>
                         <td>{{p.type}}</td>
                         <td>{{p.parkingSpot}}</td>
-                        <td>{{p.timeOfEntry}}</td>
+                        <td>{{p.timeOfEntry | date: 'short' }}</td>
                     </tr>
                 </ng-template>
             </p-table>
@@ -69,8 +69,8 @@
                         <td>{{p.id}}</td>
                         <td>{{p.type}}</td>
                         <td>{{p.chargedFee}}</td>
-                        <td>{{p.timeOfEntry}}</td>
-                        <td>{{p.timeOfExit}}</td>
+                        <td>{{p.timeOfEntry | date: 'short' }}</td>
+                        <td>{{p.timeOfExit | date: 'short' }}</td>
                     </tr>
                 </ng-template>
             </p-table>
