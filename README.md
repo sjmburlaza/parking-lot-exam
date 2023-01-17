@@ -17,7 +17,7 @@ a parking slot the satisfies the following constraints:
 
 3. Your parking system must also handle the calculation of fees, and must meet the following pricing structure:
 
-  (a) All types of car pay the flat rate of 40 pesos for the first three (3) hours;
+  (a) All types of car pay the flat rate of 40 pesos for the first three (3) hours.
   (b) The exceeding hourly rate beyond the initial three (3) hours will be charged as follows:
 
       - 20/hour for vehicles parked in SP;
