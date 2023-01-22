@@ -45,8 +45,6 @@ export class ParkingLotComponent implements OnInit  {
 
   ngOnInit(): void {
     this.getAll();
-    console.log(new Date())
-    console.log(this.entryPoints)
   }
 
   getAll(): void {
@@ -129,7 +127,6 @@ export class ParkingLotComponent implements OnInit  {
       const selectedSpot = this.findNearestParkingSpot(vehicle.entryPoint, spotsAvailable, this.entryPoints);
       response = `The vehicle can now park on parking spot number ${selectedSpot?.id}`;
       this.vehicle.parkingSpot = selectedSpot?.id;
-
       this.vehicle.isParked = true;
     }
     alert(response);
@@ -150,7 +147,7 @@ export class ParkingLotComponent implements OnInit  {
     return parkingSpot;
   }
 
-  unparkVehicle(newVehicle: Vehicle) {
+  unparkVehicle(newVehicle: Vehicle): void {
     const oldVehicle = this.parkedVehicles.find(v => v.id === newVehicle.id);
     let fees;
     if (oldVehicle) {
@@ -174,33 +171,36 @@ export class ParkingLotComponent implements OnInit  {
     let hoursDiff;
     if (entryTime) {
       entryTime = new Date(entryTime)
-      hoursDiff = Math.round(Math.abs(exitTime.valueOf() - entryTime.valueOf()) / 36e5);
+      hoursDiff = Math.ceil(Math.abs(exitTime.valueOf() - entryTime.valueOf()) / 36e5);
     }
 
     const parking = this.parkingLot.find(p => p.id === oldVehicle?.parkingSpot);
 
-    if (hoursDiff && hoursDiff > MIN_HOURS && hoursDiff < HOURS_PER_DAY) {
-      if (parking && parking.size === ParkingSlotType.SP) {
-        return (hoursDiff - MIN_HOURS) * HourlyRate.SP + FLAT_RATE;
-      } else if (parking && parking.size === ParkingSlotType.MP) {
-        return (hoursDiff - MIN_HOURS) * HourlyRate.MP + FLAT_RATE;
-      } else if (parking && parking.size === ParkingSlotType.LP) {
-        return (hoursDiff - MIN_HOURS) * HourlyRate.LP + FLAT_RATE;
+    if (parking && hoursDiff && hoursDiff > MIN_HOURS && hoursDiff < HOURS_PER_DAY) {
+      const remHours = hoursDiff - MIN_HOURS;
+      if (parking.size === ParkingSlotType.SP) {
+        return remHours * HourlyRate.SP + FLAT_RATE;
+      } else if (parking.size === ParkingSlotType.MP) {
+        return remHours * HourlyRate.MP + FLAT_RATE;
+      } else if (parking.size === ParkingSlotType.LP) {
+        return remHours * HourlyRate.LP + FLAT_RATE;
       }
-    } else if (hoursDiff && hoursDiff > HOURS_PER_DAY) {
+    } else if (parking && hoursDiff && hoursDiff > HOURS_PER_DAY) {
       const numOfDays = Math.floor(hoursDiff/HOURS_PER_DAY);
-      if (parking && parking.size === ParkingSlotType.SP) {
-        return ((hoursDiff % HOURS_PER_DAY) * HourlyRate.SP) + (numOfDays * DAY_RATE);
-      } else if (parking && parking.size === ParkingSlotType.MP) {
-        return ((hoursDiff % HOURS_PER_DAY) * HourlyRate.MP) + (numOfDays * DAY_RATE);
-      } else if (parking && parking.size === ParkingSlotType.LP) {
-        return ((hoursDiff % HOURS_PER_DAY) * HourlyRate.LP) + (numOfDays * DAY_RATE);
+      const totalDayRate = numOfDays * DAY_RATE;
+      const remHours = hoursDiff % HOURS_PER_DAY;
+      if (parking.size === ParkingSlotType.SP) {
+        return (remHours * HourlyRate.SP) + totalDayRate;
+      } else if (parking.size === ParkingSlotType.MP) {
+        return (remHours * HourlyRate.MP) + totalDayRate;
+      } else if (parking.size === ParkingSlotType.LP) {
+        return (remHours * HourlyRate.LP) + totalDayRate;
       }
     }
     return FLAT_RATE;
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.toPark) {
       this.checkParking(this.vehicle);
       const returningVehicle = this.unparkedVehicles.find(v => v.id === this.vehicle.id);
@@ -241,23 +241,23 @@ export class ParkingLotComponent implements OnInit  {
     }
   }
 
-  doPark() {
+  doPark(): void {
     this.showDialog();
     this.toPark = true;
     this.toUnpark = false;
   }
 
-  doUnpark() {
+  doUnpark(): void {
     this.showDialog();
     this.toUnpark = true;
     this.toPark = false;
   }
 
-  showDialog() {
+  showDialog(): void {
     this.recordDialog = true;
   }
 
-  close() {
+  close(): void {
     this.recordDialog = false;
   }
 
